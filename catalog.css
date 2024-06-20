@@ -1,0 +1,56 @@
+.search {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 10px;
+    padding: 10px;
+    background-color: #473f3f;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+#gamesContainer {
+    display: flex;
+    
+    gap: 20px;
+    padding-left: 140px;
+    padding: 20px;
+    background: #474343;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.game-card {
+    border: 1px solid #2a2929;
+    padding: 10px;
+    
+    border-radius: 5px;
+    background: #131313;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Светло-серый цвет границы */
+    background: #fff; /* Белый фон для ясности и чистоты */
+    color: #333; /* Темно-серый цвет текста для хорошей читаемости */
+    transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s; /* Анимация перехода */
+}
+
+input:focus, select:focus {
+    border-color: #0056b3; /* Синий цвет границы при фокусе */
+    box-shadow: 0 0 8px rgba(0, 86, 179, 0.25); /* Синяя тень при фокусе */
+    background-color: #e6f7ff; /* Светло-голубой фон при фокусе */
+    outline: none; /* Удаление стандартного контура */
+}
+.cart-icon.added {
+    animation: bounce 1s;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}

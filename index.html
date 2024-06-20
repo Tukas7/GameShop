@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин игр</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content-wrapper">
+        <header>
+            <div class="logo">G</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="catalog.html">Каталог</a></li>
+                    <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                    <li><a href="index.html#new-releases">Новинки</a></li>
+                    <li><a href="index.html#sales">Скидки</a></li>
+                </ul>
+            </nav>
+            <div class="icons">
+                <div id="cart-container" onclick="window.location.href='cart.html'">🛒</div>
+            </div>
+        </header>
+
+    <main>
+        <section id="banner" class="banner">
+            <div class="slide active" style="background-image: url('img/1.jpg');">
+                <h1>Магазин игр</h1>
+                <p>Откройте для себя последние игры и акции!</p>
+                <button>Купить сейчас</button>
+            </div>
+            <div class="slide" style="background-image: url('img/2.jpg');">
+                <h1>Магазин игр</h1>
+                <p>Откройте для себя последние игры и акции!</p>
+                <button>Купить сейчас</button>
+            </div>
+        </section>
+
+        <section class="categories">
+            <h2>Популярные категории</h2>
+            <a href="catalog.html?category=Экшен" class="category" data-category="Экшен">Экшен</a>
+            <a href="catalog.html?category=РПГ" class="category" data-category="РПГ">РПГ</a>
+            <a href="catalog.html?category=Стратегии" class="category" data-category="Стратегии">Стратегии</a>
+            <a href="catalog.html?category=Спортивные" class="category" data-category="Спортивные">Спорт</a>
+            <a href="catalog.html?category=Аркады" class="category" data-category="Аркады">Аркады</a>
+            <a href="catalog.html?category=Гонки" class="category" data-category="Гонки">Гонки</a>
+        </section>
+
+        <section id="recommended" class="recommended">
+            <h2>Рекомендуемые игры</h2>
+            <div id="recommendedGamesContainer"></div>
+        </section>
+        
+        <section id="new-releases" class="new-releases">
+            <h2>Новинки</h2>
+            <div id="newReleasesContainer"></div>
+        </section>
+        
+        <section id="sales" class="sales">
+            <h2>Игры со скидкой</h2>
+            <div id="discountedGamesContainer"></div>
+        </section>
+        
+
+        
+    </main>
+</div>
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>О нас</h3>
+            <p>Краткая информация о компании и основные цели.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Навигация</h3>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="index.html#categories">Каталог</a></li>
+                <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                <li><a href="index.html#new-releases">Новинки</a></li>
+                <li><a href="index.html#sales">Скидки</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Контакты</h3>
+            <p>Телефон: +7 123 456 7890</p>
+            <p>Email: support@example.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 Интернет-магазин игр. Все права защищены.</p>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            showSlide(currentSlide);
+            setInterval(nextSlide, 5000); // Слайд будет меняться каждые 5 секунд
+
+            document.getElementById('subscribe-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                alert('Вы успешно подписались!');
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButtons = document.querySelectorAll('.game-card button');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const gameCard = button.closest('.game-card');
+                    const title = gameCard.querySelector('h3').textContent;
+                    const price = parseFloat(gameCard.querySelector('p').textContent.replace('₽', ''));
+                    const imageUrl = gameCard.querySelector('img').src;
+                    addToCart(title, price, imageUrl);
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadRecommendedGames();
+            loadNewReleases();
+            loadDiscountedGames();
+        });
+
+        async function loadRecommendedGames() {
+        const response = await fetch('/api/games?recommended=true');
+        const games = await response.json();
+        const container = document.getElementById('recommendedGamesContainer');
+        container.innerHTML = '';
+        games.forEach(game => {
+            const gameDiv = createGameCard(game);
+            container.appendChild(gameDiv);
+        });
+    }
+
+    async function loadNewReleases() {
+        const response = await fetch('/api/games?newRelease=true');
+        const games = await response.json();
+        const container = document.getElementById('newReleasesContainer');
+        container.innerHTML = '';
+        games.forEach(game => {
+            const gameDiv = createGameCard(game);
+            container.appendChild(gameDiv);
+        });
+    }
+
+    async function loadDiscountedGames() {
+        const response = await fetch('/api/games?discounted=true');
+        const games = await response.json();
+        const container = document.getElementById('discountedGamesContainer');
+        container.innerHTML = '';
+        games.forEach(game => {
+            const gameDiv = createGameCard(game, true);
+            container.appendChild(gameDiv);
+        });
+    }
+    </script>
+</body>
+</html>

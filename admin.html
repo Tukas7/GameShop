@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ Панель</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header>
+        <div class="logo">G</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                <li><a href="index.html#new-releases">Новинки</a></li>
+                <li><a href="index.html#sales">Скидки</a></li>
+            </ul>
+        </nav>
+        <div class="icons">
+            <div id="cart-container" onclick="window.location.href='cart.html'">🛒</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="admin-container">
+            <h1>Админ Панель</h1>
+            <form id="addGameForm" enctype="multipart/form-data">
+                <label for="title">Название игры:</label>
+                <input type="text" id="title" name="title" placeholder="Название игры" required>
+    
+                <label for="description">Описание игры:</label>
+                <textarea id="description" name="description" placeholder="Описание игры" required></textarea>
+    
+                <label for="price">Цена:</label>
+                <input type="number" id="price" name="price" placeholder="Цена" required>
+    
+                <label for="genre">Жанр:</label>
+                <select id="genre" name="genre" required>
+                </select>
+    
+                <label for="imageFile">Изображение игры:</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+    
+                <label for="recommended">Рекомендуемая:</label>
+                <input type="checkbox" id="recommended" name="recommended">
+    
+                <label for="discounted">Скидка:</label>
+                <input type="checkbox" id="discounted" name="discounted">
+                
+                <label for="oldPrice">Старая цена:</label>
+                <input type="number" id="oldPrice" name="oldPrice" placeholder="Старая цена">
+    
+                <label for="newRelease">Новинка:</label>
+                <input type="checkbox" id="newRelease" name="newRelease">
+
+                <h2>Системные требования:</h2>
+                <label for="gpu">Видеокарта:</label>
+                <input type="text" id="gpu" name="gpu" placeholder="Например, GTX 1060 6GB" required>
+                
+                <label for="cpu">Процессор:</label>
+                <input type="text" id="cpu" name="cpu" placeholder="Например, Intel i5-8400" required>
+                
+                <label for="storage">Количество памяти:</label>
+                <input type="text" id="storage" name="storage" placeholder="Например, 50GB" required>
+                
+                <label for="ram">Оперативная память:</label>
+                <input type="text" id="ram" name="ram" placeholder="Например, 8GB" required>
+                <button type="submit">Добавить игру</button>
+            </form>
+            <div id="responseMessage"></div>
+
+            <div id="editGamesContainer">
+                <h2>Редактирование игр</h2>
+                <div id="gamesList"></div>
+            </div>
+            
+
+            <div id="salesStatsContainer">
+                <h2>Статистика продаж</h2>
+                <div id="salesStats"></div>
+            </div>
+            <div id="keyStatsContainer">
+                <h2>Статистика ключей</h2>
+                <div id="keyStats"></div>
+            </div>
+            
+        </div>
+        <div id="reviewsModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('reviewsModal')">&times;</span>
+                <h2>Отзывы игры</h2>
+                <div id="reviewsList"></div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования игры -->
+        <div id="editGameModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Редактирование игры</h2>
+                <form id="editGameForm" enctype="multipart/form-data">
+                    <input type="hidden" id="editGameId" name="gameId">
+                    
+                    <label for="editTitle">Название игры:</label>
+                    <input type="text" id="editTitle" name="title" placeholder="Название игры" required>
+                    
+                    <label for="editDescription">Описание игры:</label>
+                    <textarea id="editDescription" name="description" placeholder="Описание игры" required></textarea>
+
+                    <label for="currentImage">Текущее изображение:</label>
+                    <img id="currentImage" src="" alt="Текущее изображение игры" style="display: block; margin-bottom: 10px; max-width: 200px;">
+                    
+                    <label for="editImage">Изменить изображение:</label>
+                    <input type="file" id="editImage" name="imageFile" accept="image/*">
+
+                    <label for="editPrice">Цена:</label>
+                    <input type="number" id="editPrice" name="price" placeholder="Цена" required>
+                    
+                    <label for="editGenre">Жанр:</label>
+                    <select id="editGenre" name="genre" required></select>
+                    
+                    <label for="editRecommended">Рекомендуемая:</label>
+                    <input type="checkbox" id="editRecommended" name="recommended">
+                    
+                    <label for="editDiscounted">Скидка:</label>
+                    <input type="checkbox" id="editDiscounted" name="discounted">
+                    
+                    <label for="editOldPrice">Старая цена:</label>
+                    <input type="number" id="editOldPrice" name="oldPrice" placeholder="Старая цена">
+                    
+                    <label for="editNewRelease">Новинка:</label>
+                    <input type="checkbox" id="editNewRelease" name="newRelease">
+                    
+                    <h2>Системные требования:</h2>
+                    <label for="editGpu">Видеокарта:</label>
+                    <input type="text" id="editGpu" name="gpu" placeholder="Например, GTX 1060 6GB" required>
+                    
+                    <label for="editCpu">Процессор:</label>
+                    <input type="text" id="editCpu" name="cpu" placeholder="Например, Intel i5-8400" required>
+                    
+                    <label for="editStorage">Количество памяти:</label>
+                    <input type="text" id="editStorage" name="storage" placeholder="Например, 50GB" required>
+                    
+                    <label for="editRam">Оперативная память:</label>
+                    <input type="text" id="editRam" name="ram" placeholder="Например, 8GB" required>
+                    
+                    
+        
+                    <button type="submit">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Модальное окно для добавления ключей -->
+        <div id="addKeyModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Добавить ключ</h2>
+                <form id="addKeyForm">
+                    <input type="hidden" id="addKeyGameId" name="gameId">
+                    
+                    <label for="gameKey">Ключ игры:</label>
+                    <input type="text" id="gameKey" name="gameKey" placeholder="Ключ игры" required>
+                    
+                    <button type="submit">Добавить ключ</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <p>Краткая информация о компании и основные цели.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="index.html#categories">Каталог</a></li>
+                    <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                    <li><a href="index.html#new-releases">Новинки</a></li>
+                    <li><a href="index.html#sales">Скидки</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Телефон: +7 123 456 7890</p>
+                <p>Email: support@example.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Интернет-магазин игр. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали игры</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="game-details.css">
+</head>
+<body onload="init()">
+    <header>
+        <div class="logo">G</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                <li><a href="index.html#new-releases">Новинки</a></li>
+                <li><a href="index.html#sales">Скидки</a></li>
+            </ul>
+        </nav>
+        <div class="icons">
+            <div id="cart-container" onclick="window.location.href='cart.html'">🛒</div>
+        </div>
+    </header>
+    
+    <main>
+        <div id="gameDetailsContainer">
+            <h1 id="gameTitle"></h1>
+            <img id="gameImage" src="" alt="Game Image">
+            <p id="gamePrice"></p>
+            <button onclick="addToCart()">Добавить в корзину</button>
+            <div class="tabs">
+                <button class="tab-button" onclick="openTab('game')">Об игре</button>
+                <button class="tab-button" onclick="openTab('requirements')">Системные требования</button>
+                <button class="tab-button" onclick="openTab('activation')">Активация</button>
+            </div>
+            <div id="game" class="tab-content" style="display:block">
+                <h2>Описание</h2>
+                <p id="gameDescription"></p>
+            </div>
+            <div id="requirements" class="tab-content" style="display:none">
+                <h2>Системные требования</h2>
+                <p id="gameRequirements"></p>
+            </div>
+            <div id="activation" class="tab-content" style="display:none">
+                <ol>
+                    <li>Скопируйте ключ приобретённой игры с электронной почты</li>
+                    <li>Если у вас не установлен клиент Steam, <a class="as" href="http://store.steampowered.com/about/" target="_blank">скачайте и установите его</a>.</li>
+                    <li>Войдите в свой аккаунт Steam или зарегистрируйте новый, если у вас его нет.</li>
+                    <li>Перейдите в раздел «Игры» и выберите «Активировать через Steam...». </li>
+                    <li>Введите ключ активации.</li>
+                    <li>После этого игра будет в вашей библиотеке Steam, и вы сможете её скачать.</li>
+                </ol>
+            </div>
+            <h2>Отзывы</h2>
+            <div id="reviewsContainer">
+                <div id="gameReviews"></div>
+                <form id="reviewForm" onsubmit="submitReview(event)">
+                    <input type="text" id="username" name="username" placeholder="Ваше имя" required>
+                    <input type="number" id="rating" name="rating" min="1" max="5" placeholder="Рейтинг (1-5)" required>
+                    <textarea id="comment" name="comment" placeholder="Ваш отзыв" required></textarea>
+                    <button type="submit">Оставить отзыв</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <p>Краткая информация о компании и основные цели.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="index.html#categories">Каталог</a></li>
+                    <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                    <li><a href="index.html#new-releases">Новинки</a></li>
+                    <li><a href="index.html#sales">Скидки</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Телефон: +7 123 456 7890</p>
+                <p>Email: support@example.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Интернет-магазин игр. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function openTab(tabName) {
+            var i, x, tablinks;
+            x = document.getElementsByClassName("tab-content");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < x.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active";
+        }
+
+        function getGameIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('gameId');
+        }
+
+        function init() {
+            const gameId = getGameIdFromUrl();
+            fetchGameDetails(gameId);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const gameId = params.get('gameId');
+    fetchGameDetails(gameId);
+});
+        function fetchGameDetails(gameId) {
+            fetch(`/api/game/${gameId}`)
+                .then(response => response.json())
+                .then(game => {
+                    document.getElementById('gameTitle').textContent = game.Title;
+                    document.getElementById('gameImage').src = game.ImageURL;
+                    document.getElementById('gamePrice').textContent = `Цена: ${game.Price} руб.`;
+                    document.getElementById('gameDescription').textContent = game.Description;
+
+                    const requirements = `
+                        <p><strong>Видеокарта:</strong> ${game.GPU}</p>
+                        <p><strong>Процессор:</strong> ${game.CPU}</p>
+                        <p><strong>Количество памяти:</strong> ${game.Storage}</p>
+                        <p><strong>Оперативная память:</strong> ${game.RAM}</p>
+                    `;
+                    document.getElementById('gameRequirements').innerHTML = requirements;
+
+                    loadReviews(gameId);
+                })
+                .catch(error => console.error('Error fetching game details:', error));
+        }
+
+        function loadReviews(gameId) {
+            fetch(`/api/reviews/${gameId}`)
+                .then(response => response.json())
+                .then(reviews => {
+                    const reviewsContainer = document.getElementById('gameReviews');
+                    reviewsContainer.innerHTML = '';
+                    reviews.forEach(review => {
+                        const reviewElement = document.createElement('div');
+                        reviewElement.className = 'review';
+                        reviewElement.innerHTML = `
+                            <p><strong>${review.Username}</strong> (${new Date(review.ReviewDate).toLocaleDateString()}):</p>
+                            <p>Рейтинг: ${review.Rating}/5</p>
+                            <p>${review.Comment}</p>
+                        `;
+                        reviewsContainer.appendChild(reviewElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching reviews:', error));
+        }
+
+        function submitReview(event) {
+            event.preventDefault();
+            const gameId = getGameIdFromUrl();
+            const formData = new FormData(document.getElementById('reviewForm'));
+            formData.append('gameId', gameId);
+
+            fetch('/api/reviews', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    loadReviews(gameId);
+                    document.getElementById('reviewForm').reset();
+                } else {
+                    console.error('Error submitting review');
+                }
+            })
+            .catch(error => console.error('Error submitting review:', error));
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог игр</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="catalog.css">
+</head>
+<body>
+    <header>
+        <div class="logo">G</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                <li><a href="index.html#new-releases">Новинки</a></li>
+                <li><a href="index.html#sales">Скидки</a></li>
+            </ul>
+        </nav>
+        <div class="icons">
+            <div id="cart-container" onclick="window.location.href='cart.html'">🛒</div>
+        </div>
+    </header>
+
+    <main>
+        
+        <section class="search">
+            <input type="text" id="searchBox" placeholder="Поиск по названию...">
+            <select id="sortOrder">
+                <option value="Title">По цене</option>
+                <option value="Price DESC">От дорогих к дешевым</option>
+                <option value="Price ASC">От дешевых к дорогим</option>
+            </select>
+            <select id="genreFilter">
+                <option value="">Все жанры</option>
+                <option value="Экшен">Экшен</option>
+                <option value="РПГ">РПГ</option>
+                <option value="Стратегии">Стратегии</option>
+                <option value="Спортивные">Спортивные</option>
+                <option value="Гонки">Гонки</option>
+                <option value="Аркады">Аркады</option>
+            </select>
+            <button onclick="fetchGames()">Поиск</button>
+        </section>
+        
+        <div class="game" id="gamesContainer"></div>
+        
+        
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <p>Краткая информация о компании и основные цели.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="index.html#categories">Каталог</a></li>
+                    <li><a href="index.html#recommended">Рекомендуемые</a></li>
+                    <li><a href="index.html#new-releases">Новинки</a></li>
+                    <li><a href="index.html#sales">Скидки</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Телефон: +7 123 456 7890</p>
+                <p>Email: support@example.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Интернет-магазин игр. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchGames();
+        });
+
+        document.getElementById('genreFilter').addEventListener('change', function() {
+            this.setAttribute('data-user-changed', 'true');
+            fetchGames();
+        });
+    </script>
+    
+</body>
+</html>

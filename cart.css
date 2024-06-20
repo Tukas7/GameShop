@@ -1,0 +1,52 @@
+#cart-items {
+    display: flex; /* Элементы внутри будут располагаться в строку */
+    flex-wrap: wrap; /* Перенос элементов на новую строку, если не хватает места */
+    gap: 20px; /* Расстояние между элементами корзины */
+    padding: 20px;
+    justify-content: space-between;
+
+}
+
+/* Стили для каждого элемента в корзине */
+.cart-item {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание элементов */
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 8px; /* Скругление углов */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Тень для элементов */
+    width: 100%;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* Гарантируем, что изображение не будет искажено */
+    margin-right: 20px;
+}
+
+.cart-item input[type="number"] {
+    width: 50px; /* Ширина поля для ввода количества */
+    margin: 0 10px;
+}
+
+/* Стилизация формы оформления заказа */
+.checkout-form {
+    background: #474343;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.checkout-form h2 {
+    margin-top: 0;
+}
+
+.checkout-form input, .checkout-form button {
+    width: 100%;  /* Полная ширина для полей формы */
+    padding: 8px;
+    margin-top: 10px;  /* Отступ сверху для всех элементов формы */
+    box-sizing: border-box;  /* Границы и padding включены в ширину */
+}
+
