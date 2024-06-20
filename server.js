@@ -1,5 +1,5 @@
 const cors = require('cors');
-const sql = require('mssql/msnodesqlv8');
+const sql = require('mssql');
 const express = require('express');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
@@ -24,9 +24,10 @@ const config = {
     password: 'qwerty123321F',
     server: '92.53.107.236',
     database: 'GameShop',
-    driver: 'msnodesqlv8',
+    
     options: {
-      trustedConnection: false, // Обязательно укажите false
+        encrypt: true,
+        trustServerCertificate: true // Игнорировать ошибки сертификата
     }
 };
 
