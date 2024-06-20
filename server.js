@@ -5,7 +5,7 @@ const multer = require('multer');
 const nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const path = require('path');
 app.use(express.json()); // Для разбора JSON-форматированных тел запросов
 app.use(cors()); // Для обработки CORS-запросов, если фронтенд будет на другом домене
