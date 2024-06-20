@@ -108,11 +108,12 @@ async function updateCartUI() {
 
     const cartContainer = document.getElementById('cart-items');
     cartContainer.innerHTML = '';
+
     cart.forEach((item, index) => {
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item';
         itemElement.innerHTML = `
-            <img src="${item.imageurl}" alt="${item.title}" style="width:100px; height:100px; object-fit: cover;">
+            <img src="${item.ImageURL}" alt="${item.title}" style="width:100px; height:100px; object-fit: cover;">
             <div>Название: ${item.title}</div>
             <p>Цена за единицу: ${item.price} руб.</p>
             <div>Количество:<input type="number" min="1" value="${item.quantity}" onchange="updateItemQuantity(${index}, this.value)"></div>

@@ -29,7 +29,7 @@
             <h1 id="gameTitle"></h1>
             <img id="gameImage" src="" alt="Game Image">
             <p id="gamePrice"></p>
-            <button onclick="addToCart()">Добавить в корзину</button>
+            <button onclick="add()">Добавить в корзину</button>
             <div class="tabs">
                 <button class="tab-button" onclick="openTab('game')">Об игре</button>
                 <button class="tab-button" onclick="openTab('requirements')">Системные требования</button>
@@ -185,7 +185,19 @@
             })
             .catch(error => console.error('Error submitting review:', error));
         }
+        function add() {
+        const params = new URLSearchParams(window.location.search);
+        const gameTitle = document.getElementById('gameTitle').textContent;
+        const gamePrice = document.getElementById('gamePrice').textContent;
+        const gameImage = document.getElementById('gameImage').src;
+        const GameID = params.get('gameId');
+
         
+        addToCart(gameTitle, gamePrice, gameImage, GameID)
+
+        console.log('Добавлено в корзину:', gameDetails);
+       
+    }
     </script>
 </body>
 </html>
